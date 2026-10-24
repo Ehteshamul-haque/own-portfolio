@@ -7,37 +7,42 @@ import { SectionContainer } from "@/components/ui/SectionContainer";
 
 export function AboutSection() {
   return (
-    <SectionContainer id="about" ariaLabelledBy="about-heading">
+    <SectionContainer
+      id="about"
+      ariaLabelledBy="about-heading"
+      className="py-14 sm:py-20 lg:py-24"
+    >
       <SectionHeading
         id="about-heading"
         eyebrow="About"
         title="Practical engineering with production in mind"
         description="A concise look at how I work across frontend, backend, and deployment."
+        className="mb-8 sm:mb-10"
       />
 
-      <div className="grid items-start gap-8 lg:grid-cols-[240px_1fr] lg:gap-10 xl:grid-cols-[260px_1fr]">
-        <aside className="mx-auto w-full max-w-[240px] lg:mx-0 lg:max-w-none">
+      <div className="grid items-start gap-6 sm:gap-8 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-12">
+        <aside className="w-full max-w-[260px] justify-self-center lg:justify-self-start">
           {profile.imageSrc ? (
             <div className="overflow-hidden rounded-2xl border border-border bg-surface">
-              <div className="relative mx-auto aspect-square w-full max-h-[240px] bg-surface-elevated">
+              <div className="relative aspect-square w-full bg-surface-elevated">
                 <Image
                   src={profile.imageSrc}
                   alt={profile.imageAlt ?? profile.name}
                   fill
                   priority
                   quality={100}
-                  sizes="240px"
+                  sizes="260px"
                   className="object-cover object-top"
                 />
               </div>
 
-              <div className="border-t border-border px-3.5 py-3">
+              <div className="space-y-1 border-t border-border px-4 py-3.5">
                 <p className="font-display text-base font-semibold text-ink">
                   {profile.name}
                 </p>
-                <p className="mt-1 text-sm text-accent">{profile.title}</p>
+                <p className="text-sm text-accent">{profile.title}</p>
                 {profile.location ? (
-                  <p className="mt-1.5 inline-flex items-center gap-1.5 text-xs text-ink-subtle">
+                  <p className="inline-flex items-center gap-1.5 pt-0.5 text-xs text-ink-subtle">
                     <MapPin size={12} aria-hidden="true" />
                     {profile.location}
                   </p>
@@ -45,15 +50,15 @@ export function AboutSection() {
               </div>
 
               {publishedExperience.length > 0 ? (
-                <div className="border-t border-border px-3.5 py-3">
-                  <p className="mb-2.5 inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-ink-subtle">
+                <div className="border-t border-border px-4 py-3.5">
+                  <p className="mb-3 inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-ink-subtle">
                     <Briefcase size={12} aria-hidden="true" />
                     Roles
                   </p>
-                  <ul className="space-y-2.5">
+                  <ul className="space-y-3">
                     {publishedExperience.map((role) => (
-                      <li key={role.id} className="text-left">
-                        <p className="text-sm font-semibold text-ink">
+                      <li key={role.id}>
+                        <p className="text-sm font-semibold leading-snug text-ink">
                           {role.title}
                         </p>
                         <p className="mt-0.5 text-xs text-accent">{role.company}</p>
@@ -66,7 +71,7 @@ export function AboutSection() {
                 </div>
               ) : null}
 
-              <div className="border-t border-border bg-accent/5 px-3.5 py-3 text-center">
+              <div className="border-t border-border bg-accent/5 px-4 py-3.5 text-center">
                 <p className="font-display text-xl font-semibold text-ink">
                   3.5+ Years
                 </p>
@@ -78,8 +83,8 @@ export function AboutSection() {
           ) : null}
         </aside>
 
-        <div className="space-y-8">
-          <div className="space-y-4 text-base leading-relaxed text-ink-muted sm:text-lg">
+        <div className="min-w-0 space-y-6 sm:space-y-7">
+          <div className="space-y-3.5 text-[15px] leading-relaxed text-ink-muted sm:space-y-4 sm:text-base lg:text-lg">
             <p>
               Hi, I&apos;m {profile.shortName} — a Full Stack / MERN Developer based
               in {profile.location ?? "India"} with 3.5+ years building scalable web
@@ -90,15 +95,15 @@ export function AboutSection() {
             ))}
           </div>
 
-          <div className="rounded-2xl border border-border bg-surface/70 p-5 sm:p-6">
-            <h3 className="font-display text-lg font-semibold text-ink">
+          <div className="rounded-2xl border border-border bg-surface/70 p-4 sm:p-5 lg:p-6">
+            <h3 className="font-display text-base font-semibold text-ink sm:text-lg">
               How I approach engineering
             </h3>
-            <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            <ul className="mt-3.5 grid gap-2.5 sm:mt-4 sm:grid-cols-2 sm:gap-3">
               {profile.about.approach.map((item) => (
                 <li
                   key={item}
-                  className="flex items-start gap-3 text-sm text-ink-muted"
+                  className="flex items-start gap-2.5 text-sm leading-snug text-ink-muted"
                 >
                   <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
                     <Check size={12} aria-hidden="true" />

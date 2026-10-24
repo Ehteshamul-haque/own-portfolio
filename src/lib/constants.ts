@@ -1,7 +1,7 @@
 import type { NavItem, ProjectCategory } from "@/types/portfolio";
 
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://ehteshamulhaque.dev";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://ehteshamul-dev.netlify.app";
 
 export const NAV_ITEMS: NavItem[] = [
   { id: "home", label: "Home", href: "#home" },

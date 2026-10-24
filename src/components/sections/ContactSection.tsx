@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Download, Mail, Phone, Send } from "lucide-react";
+import { Download, Mail, Send } from "lucide-react";
 import { profile } from "@/data/profile";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { SectionContainer } from "@/components/ui/SectionContainer";
@@ -20,22 +20,16 @@ const contactSchema = z.object({
   name: z.string().min(2, "Please enter your name."),
   email: z.string().email("Please enter a valid email address."),
   subject: z.string().min(3, "Please add a short subject."),
-  message: z.string().min(20, "Please write a message of at least 20 characters."),
+  message: z
+    .string()
+    .min(20, "Please write a message of at least 20 characters."),
 });
 
 type ContactValues = z.infer<typeof contactSchema>;
 
-function isPlaceholderEmail(email: string) {
-  return email.includes("example.com") || email.includes("placeholder");
-}
-
 export function ContactSection() {
-  const [status, setStatus] = useState<
-    "idle" | "submitting" | "success" | "error"
-  >("idle");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [status, setStatus] = useState<"idle" | "submitting" | "ready">("idle");
 
-  const emailConfigured = !isPlaceholderEmail(profile.email);
   const github = profile.socialLinks.find((link) => link.platform === "github");
   const linkedin = profile.socialLinks.find(
     (link) => link.platform === "linkedin",
@@ -57,60 +51,21 @@ export function ContactSection() {
     },
   });
 
-  const onSubmit = handleSubmit(async (values) => {
+  const onSubmit = handleSubmit((values) => {
     setStatus("submitting");
-    setErrorMessage(null);
-
-    const endpoint = process.env.NEXT_PUBLIC_CONTACT_FORM_ENDPOINT;
-
-    if (endpoint) {
-      try {
-        const response = await fetch(endpoint, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(values),
-        });
-
-        if (!response.ok) {
-          throw new Error("The contact endpoint returned an error.");
-        }
-
-        reset();
-        setStatus("success");
-        setErrorMessage(null);
-        return;
-      } catch {
-        setStatus("error");
-        setErrorMessage(
-          "Unable to send through the configured endpoint. Please email me directly instead.",
-        );
-        return;
-      }
-    }
-
-    if (!emailConfigured) {
-      setStatus("error");
-      setErrorMessage(
-        "Contact email is not configured yet. Update src/data/profile.ts with your real email address.",
-      );
-      return;
-    }
 
     const body = [
       `Name: ${values.name}`,
       `Email: ${values.email}`,
+      `Portfolio: ${profile.portfolioUrl}`,
       "",
       values.message,
     ].join("\n");
 
     const mailto = `mailto:${profile.email}?subject=${encodeURIComponent(values.subject)}&body=${encodeURIComponent(body)}`;
-    const anchor = document.createElement("a");
-    anchor.href = mailto;
-    anchor.rel = "noopener";
-    document.body.appendChild(anchor);
-    anchor.click();
-    anchor.remove();
-    setStatus("idle");
+    window.open(mailto, "_self");
+    reset();
+    setStatus("ready");
   });
 
   return (
@@ -127,29 +82,28 @@ export function ContactSection() {
       />
 
       <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="space-y-4">
-          <div className="flex flex-wrap gap-3">
-            {emailConfigured ? (
-              <LinkButton href={`mailto:${profile.email}`}>
-                <Mail size={18} aria-hidden="true" />
-                Email Me
-              </LinkButton>
-            ) : (
-              <p className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
-                Set your real email in <code>src/data/profile.ts</code> to enable
-                direct email contact.
-              </p>
-            )}
-
-            {profile.phone ? (
-              <LinkButton href={`tel:${profile.phone.replace(/\s+/g, "")}`} variant="secondary">
-                <Phone size={18} aria-hidden="true" />
-                {profile.phone}
-              </LinkButton>
-            ) : null}
+        <div className="space-y-5">
+          <div className="rounded-2xl border border-border bg-canvas/50 p-5">
+            <p className="text-sm text-ink-muted">Reach me directly at</p>
+            <a
+              href={`mailto:${profile.email}`}
+              className="mt-2 inline-flex items-center gap-2 break-all text-base font-medium text-accent transition-colors hover:text-accent-bright focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            >
+              <Mail size={18} aria-hidden="true" />
+              {profile.email}
+            </a>
+            <p className="mt-3 text-sm leading-relaxed text-ink-subtle">
+              Prefer email for recruiting conversations. Use the form to draft a
+              message, or email me directly.
+            </p>
           </div>
 
           <div className="flex flex-wrap gap-3">
+            <LinkButton href={`mailto:${profile.email}`}>
+              <Mail size={18} aria-hidden="true" />
+              Email Me
+            </LinkButton>
+
             {linkedin && isConfiguredUrl(linkedin.href) ? (
               <LinkButton
                 href={linkedin.href}
@@ -182,26 +136,10 @@ export function ContactSection() {
                 rel="noopener noreferrer"
               >
                 <Download size={18} aria-hidden="true" />
-                Download CV
+                View CV
               </LinkButton>
-            ) : (
-              <p className="w-full text-sm text-ink-subtle">
-                Add your PDF at{" "}
-                <code className="text-accent">
-                  public/resume/Ehteshamul_Haque_Resume.pdf
-                </code>{" "}
-                and set <code className="text-accent">resumeUrl</code> in profile
-                data.
-              </p>
-            )}
+            ) : null}
           </div>
-
-          <p className="pt-2 text-sm leading-relaxed text-ink-muted">
-            Prefer email for recruiting conversations. Form submissions open your
-            mail client unless{" "}
-            <code className="text-accent">NEXT_PUBLIC_CONTACT_FORM_ENDPOINT</code>{" "}
-            is configured.
-          </p>
         </div>
 
         <form
@@ -211,7 +149,10 @@ export function ContactSection() {
         >
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label htmlFor="contact-name" className="text-sm font-medium text-ink">
+              <label
+                htmlFor="contact-name"
+                className="text-sm font-medium text-ink"
+              >
                 Name
               </label>
               <input
@@ -229,7 +170,10 @@ export function ContactSection() {
             </div>
 
             <div>
-              <label htmlFor="contact-email" className="text-sm font-medium text-ink">
+              <label
+                htmlFor="contact-email"
+                className="text-sm font-medium text-ink"
+              >
                 Email
               </label>
               <input
@@ -249,7 +193,10 @@ export function ContactSection() {
           </div>
 
           <div className="mt-4">
-            <label htmlFor="contact-subject" className="text-sm font-medium text-ink">
+            <label
+              htmlFor="contact-subject"
+              className="text-sm font-medium text-ink"
+            >
               Subject
             </label>
             <input
@@ -266,7 +213,10 @@ export function ContactSection() {
           </div>
 
           <div className="mt-4">
-            <label htmlFor="contact-message" className="text-sm font-medium text-ink">
+            <label
+              htmlFor="contact-message"
+              className="text-sm font-medium text-ink"
+            >
               Message
             </label>
             <textarea
@@ -283,15 +233,9 @@ export function ContactSection() {
             ) : null}
           </div>
 
-          {status === "success" ? (
+          {status === "ready" ? (
             <p className="mt-4 text-sm text-emerald-300" role="status">
-              Message sent successfully.
-            </p>
-          ) : null}
-
-          {errorMessage ? (
-            <p className="mt-4 text-sm text-amber-100" role="alert">
-              {errorMessage}
+              Opening your email app to send the message to {profile.email}.
             </p>
           ) : null}
 
@@ -301,7 +245,7 @@ export function ContactSection() {
             disabled={status === "submitting"}
           >
             <Send size={16} aria-hidden="true" />
-            {status === "submitting" ? "Preparing…" : "Send Message"}
+            {status === "submitting" ? "Opening email…" : "Send Message"}
           </Button>
         </form>
       </div>

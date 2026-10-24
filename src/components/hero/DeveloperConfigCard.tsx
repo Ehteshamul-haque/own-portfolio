@@ -1,8 +1,16 @@
 "use client";
 
 import { useRef, type MouseEvent } from "react";
-import { profile } from "@/data/profile";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
+
+const developer = {
+  name: "Ehteshamul Haque",
+  role: "Full Stack Developer",
+  experience: "3.5+ Years",
+  stack: ["MERN", "Next.js", "Node.js"] as const,
+  focus: "Scalable Web Applications",
+  status: "Open to Opportunities",
+} as const;
 
 export function DeveloperConfigCard() {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -56,30 +64,37 @@ export function DeveloperConfigCard() {
         </div>
         <pre className="relative overflow-x-auto px-4 py-3 font-mono text-[12px] leading-5 sm:text-[13px] sm:leading-6">
           <code>
-            <span className="text-ink-subtle">{"// @ts-check"}</span>
-            {"\n"}
             <span className="text-sky-300">interface</span>
             <span className="text-amber-200"> Developer </span>
             {"{\n  "}
             <span className="text-sky-200">name</span>
             {": "}
-            <span className="text-emerald-300">&quot;{profile.name}&quot;</span>
+            <span className="text-emerald-300">&quot;{developer.name}&quot;</span>
+            {";\n  "}
+            <span className="text-sky-200">role</span>
+            {": "}
+            <span className="text-emerald-300">&quot;{developer.role}&quot;</span>
+            {";\n  "}
+            <span className="text-sky-200">experience</span>
+            {": "}
+            <span className="text-emerald-300">&quot;{developer.experience}&quot;</span>
             {";\n  "}
             <span className="text-sky-200">stack</span>
-            {": "}
-            <span className="text-emerald-300">&quot;MERN&quot;</span>
-            {";\n  "}
+            {": ["}
+            {developer.stack.map((item, i) => (
+              <span key={item}>
+                {i > 0 ? ", " : ""}
+                <span className="text-emerald-300">&quot;{item}&quot;</span>
+              </span>
+            ))}
+            {"];\n  "}
             <span className="text-sky-200">focus</span>
             {": "}
-            <span className="text-emerald-300">&quot;Scalability&quot;</span>
+            <span className="text-emerald-300">&quot;{developer.focus}&quot;</span>
             {";\n  "}
             <span className="text-sky-200">status</span>
             {": "}
-            <span className="text-emerald-300">&quot;Open to work&quot;</span>
-            {";\n  "}
-            <span className="text-sky-200">level</span>
-            {": "}
-            <span className="text-violet-300">Senior</span>
+            <span className="text-emerald-300">&quot;{developer.status}&quot;</span>
             {";\n}"}
           </code>
         </pre>

@@ -44,8 +44,8 @@ export function HeroSection() {
         </p>
 
         <p className="mt-2.5 max-w-xl text-xs leading-relaxed text-ink-muted sm:mt-3 sm:text-sm">
-          Engineering high-performance, scalable applications with MERN, Next.js,
-          Shopify, and cloud-native systems.
+          Engineering high-performance, scalable applications with MERN, Next.js, Microservices, PostgreSQL,
+          Shopify, Google Ads, Adtech, and cloud-native systems.
         </p>
 
         <div className="mt-4 flex flex-wrap items-center justify-center gap-2 sm:mt-5 sm:gap-3">
@@ -92,7 +92,7 @@ export function HeroSection() {
           ))}
         </ul>
 
-        <div className="mt-4 w-full sm:mt-6">
+        <div className="mt-4 hidden w-full md:mt-6 md:block">
           <DeveloperConfigCard />
         </div>
       </div>
