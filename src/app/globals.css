@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+:root {
+  --canvas: #070b12;
+  --surface: #0c121c;
+  --surface-elevated: #111827;
+  --surface-hover: #152033;
+  --border: rgba(148, 163, 184, 0.16);
+  --border-strong: rgba(148, 163, 184, 0.28);
+  --ink: #f1f5f9;
+  --ink-muted: #94a3b8;
+  --ink-subtle: #64748b;
+  --ink-inverse: #041018;
+  --accent: #38bdf8;
+  --accent-bright: #7dd3fc;
+  --background: var(--canvas);
+  --foreground: var(--ink);
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+  --color-ink-inverse: var(--ink-inverse);
+  --color-accent: var(--accent);
+  --color-accent-bright: var(--accent-bright);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-ibm-plex);
+  --font-display: var(--font-space-grotesk);
+  --font-mono: var(--font-jetbrains);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background:
+    radial-gradient(ellipse at top, rgba(56, 189, 248, 0.06), transparent 40%),
+    linear-gradient(180deg, #070b12 0%, #05080f 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+::selection {
+  background: rgba(56, 189, 248, 0.3);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+code {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.9em;
+}
+
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-right {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-marquee-left {
+  animation: marquee-left linear infinite;
+}
+
+.animate-marquee-right {
+  animation: marquee-right linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-left,
+  .animate-marquee-right {
+    animation: none;
+  }
+}
