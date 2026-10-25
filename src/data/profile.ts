@@ -45,8 +45,9 @@ export const profile: Profile = {
   ],
   about: {
     paragraphs: [
-      "I'm a Senior Full Stack (MERN) Developer with 3.5+ years building scalable, event-driven web applications and microservices. My work spans React.js, Next.js, TypeScript, Node.js, MongoDB, PostgreSQL, Shopify Hydrogen, and cloud deployment on AWS.",
-      "I've designed Kafka, Redis, and BullMQ backends that reduced system latency by 35%, and shipped real-time, AI-assisted campaign platforms with Dockerized services on AWS.",
+      "I'm a Senior Full Stack Developer with 3.5+ years of experience building scalable, event-driven applications and microservices. From system architecture and API design to troubleshooting production issues, CI/CD, cloud deployment, and performance monitoring, I focus on building reliable, production-ready systems.",
+      "My expertise spans React.js, Next.js, TypeScript, Node.js, MongoDB, PostgreSQL, Shopify Hydrogen, and AWS. I've engineered event-driven backends using Kafka, Redis, and BullMQ, reduced system latency by 35%, and deployed Dockerized services powering real-time, AI-assisted campaign platforms.",
+      "Beyond writing code, I focus on system reliability, performance optimization, security, and maintaining healthy production systems.",
     ],
     approach: [
       "Clean, maintainable TypeScript and React code",

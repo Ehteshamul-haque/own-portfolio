@@ -37,6 +37,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
     <button
       ref={buttonRef}
       type="button"
+      style={{ cursor: "pointer" }}
       onClick={onClick}
       aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
       title={isDark ? "Light mode" : "Dark mode"}

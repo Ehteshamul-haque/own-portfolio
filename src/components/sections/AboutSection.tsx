@@ -7,8 +7,8 @@ import { SectionContainer } from "@/components/ui/SectionContainer";
 
 const highlights = [
   { value: "3.5+", label: "Years experience" },
-  { value: "35%", label: "Latency reduced" },
-  { value: "2", label: "Product companies" },
+  { value: "99.99%", label: "Uptime" },
+  { value: "5+", label: "Projects Delivered" },
 ];
 
 export function AboutSection() {
@@ -65,8 +65,7 @@ export function AboutSection() {
         <div className="flex min-w-0 flex-col justify-between gap-8">
           <div className="space-y-4 text-[15px] leading-relaxed text-ink-muted sm:text-base lg:text-[1.05rem] lg:leading-relaxed">
             <p className="font-display text-xl leading-snug tracking-tight text-ink sm:text-2xl">
-              Hi, I&apos;m {profile.shortName} — building scalable web apps, APIs,
-              and cloud-ready systems from {profile.location ?? "India"}.
+             Hi, I'm Ehteshamul — building scalable web applications and high-performance backend systems.
             </p>
             {profile.about.paragraphs.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
