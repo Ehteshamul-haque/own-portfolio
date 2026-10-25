@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { useReducedMotion } from "@/hooks/use-reduced-motion";
 
 const developer = {
@@ -16,16 +16,25 @@ export function DeveloperConfigCard() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  const [canTilt, setCanTilt] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const sync = () => setCanTilt(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   const onMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (reduced || !wrapRef.current) return;
+    if (!canTilt || reduced || !wrapRef.current) return;
     const r = wrapRef.current.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width;
     const py = (e.clientY - r.top) / r.height;
     const x = px - 0.5;
     const y = py - 0.5;
 
-    wrapRef.current.style.transform = `perspective(1000px) rotateY(${x * 14}deg) rotateX(${-y * 10}deg) scale3d(1.02,1.02,1.02)`;
+    wrapRef.current.style.transform = `perspective(1000px) rotateY(${x * 10}deg) rotateX(${-y * 7}deg)`;
 
     if (glowRef.current) {
       glowRef.current.style.opacity = "1";
@@ -35,66 +44,76 @@ export function DeveloperConfigCard() {
 
   const onLeave = () => {
     if (!wrapRef.current) return;
-    wrapRef.current.style.transform =
-      "perspective(1000px) rotateY(0deg) rotateX(0deg) scale3d(1,1,1)";
+    wrapRef.current.style.transform = "";
     if (glowRef.current) glowRef.current.style.opacity = "0";
   };
 
   return (
     <div
       ref={wrapRef}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      className="mx-auto w-full max-w-md origin-center transition-transform duration-150 ease-out will-change-transform"
-      style={{ transformStyle: "preserve-3d" }}
+      onMouseMove={canTilt ? onMove : undefined}
+      onMouseLeave={canTilt ? onLeave : undefined}
+      className="mx-auto w-full max-w-md"
     >
-      <div className="relative overflow-hidden rounded-xl border border-border bg-[#0b1220] shadow-[0_0_28px_rgba(56,189,248,0.1)] transition-shadow duration-200 hover:border-accent/35 hover:shadow-[0_0_40px_rgba(56,189,248,0.18)]">
+      <div className="relative overflow-hidden rounded-xl border border-border bg-surface text-left shadow-[0_10px_28px_rgba(15,23,42,0.08)] transition-[border-color,box-shadow] duration-200 hover:border-accent/35 dark:bg-surface-elevated dark:shadow-[0_8px_28px_color-mix(in_srgb,var(--accent)_12%,transparent)] dark:hover:shadow-[0_8px_40px_color-mix(in_srgb,var(--accent)_20%,transparent)]">
         <div
           ref={glowRef}
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200"
         />
-        <div className="relative flex items-center gap-2 border-b border-border px-3 py-2">
+        <div className="relative flex items-center gap-2 border-b border-border bg-surface-elevated/80 px-3 py-2 dark:bg-transparent">
           <span className="h-2 w-2 rounded-full bg-red-400/80" />
-          <span className="h-2 w-2 rounded-full bg-amber-300/80" />
-          <span className="h-2 w-2 rounded-full bg-emerald-400/80" />
-          <span className="mx-auto font-mono text-[11px] text-ink-subtle">
+          <span className="h-2 w-2 rounded-full bg-amber-400/80" />
+          <span className="h-2 w-2 rounded-full bg-emerald-500/80" />
+          <span className="mx-auto font-mono text-[10px] text-ink-subtle sm:text-[11px]">
             developer.config.ts
           </span>
         </div>
-        <pre className="relative overflow-x-auto px-4 py-3 font-mono text-[12px] leading-5 sm:text-[13px] sm:leading-6">
-          <code>
-            <span className="text-sky-300">interface</span>
-            <span className="text-amber-200"> Developer </span>
+        <pre className="relative overflow-x-auto overscroll-x-contain px-3 py-3 font-mono text-[11px] leading-5 antialiased sm:px-4 sm:text-[13px] sm:leading-6">
+          <code className="[text-rendering:geometricPrecision]">
+            <span style={{ color: "var(--code-keyword)" }}>interface</span>
+            <span style={{ color: "var(--code-type)" }}> Developer </span>
             {"{\n  "}
-            <span className="text-sky-200">name</span>
+            <span style={{ color: "var(--code-key)" }}>name</span>
             {": "}
-            <span className="text-emerald-300">&quot;{developer.name}&quot;</span>
+            <span style={{ color: "var(--code-string)" }}>
+              &quot;{developer.name}&quot;
+            </span>
             {";\n  "}
-            <span className="text-sky-200">role</span>
+            <span style={{ color: "var(--code-key)" }}>role</span>
             {": "}
-            <span className="text-emerald-300">&quot;{developer.role}&quot;</span>
+            <span style={{ color: "var(--code-string)" }}>
+              &quot;{developer.role}&quot;
+            </span>
             {";\n  "}
-            <span className="text-sky-200">experience</span>
+            <span style={{ color: "var(--code-key)" }}>experience</span>
             {": "}
-            <span className="text-emerald-300">&quot;{developer.experience}&quot;</span>
+            <span style={{ color: "var(--code-string)" }}>
+              &quot;{developer.experience}&quot;
+            </span>
             {";\n  "}
-            <span className="text-sky-200">stack</span>
+            <span style={{ color: "var(--code-key)" }}>stack</span>
             {": ["}
             {developer.stack.map((item, i) => (
               <span key={item}>
                 {i > 0 ? ", " : ""}
-                <span className="text-emerald-300">&quot;{item}&quot;</span>
+                <span style={{ color: "var(--code-string)" }}>
+                  &quot;{item}&quot;
+                </span>
               </span>
             ))}
             {"];\n  "}
-            <span className="text-sky-200">focus</span>
+            <span style={{ color: "var(--code-key)" }}>focus</span>
             {": "}
-            <span className="text-emerald-300">&quot;{developer.focus}&quot;</span>
+            <span style={{ color: "var(--code-string)" }}>
+              &quot;{developer.focus}&quot;
+            </span>
             {";\n  "}
-            <span className="text-sky-200">status</span>
+            <span style={{ color: "var(--code-key)" }}>status</span>
             {": "}
-            <span className="text-emerald-300">&quot;{developer.status}&quot;</span>
+            <span style={{ color: "var(--code-string)" }}>
+              &quot;{developer.status}&quot;
+            </span>
             {";\n}"}
           </code>
         </pre>

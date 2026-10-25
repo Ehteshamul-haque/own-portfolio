@@ -1,16 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { projects } from "@/data/projects";
 import { PROJECT_FILTERS } from "@/lib/constants";
-import { usePortfolioStore } from "@/store/portfolio-store";
 import { SectionHeading } from "@/components/layout/SectionHeading";
 import { SectionContainer } from "@/components/ui/SectionContainer";
 import { ProjectCard } from "@/components/ui/ProjectCard";
 import { cn } from "@/lib/utils";
+import type { ProjectCategory } from "@/types/portfolio";
 
 export function ProjectsSection() {
-  const projectFilter = usePortfolioStore((state) => state.projectFilter);
-  const setProjectFilter = usePortfolioStore((state) => state.setProjectFilter);
+  const [projectFilter, setProjectFilter] = useState<ProjectCategory>("all");
 
   const filtered =
     projectFilter === "all"
@@ -34,7 +34,7 @@ export function ProjectsSection() {
 
       <div
         className="mb-8 flex flex-wrap gap-2"
-        role="tablist"
+        role="group"
         aria-label="Filter projects by category"
       >
         {PROJECT_FILTERS.map((filter) => {
@@ -43,8 +43,7 @@ export function ProjectsSection() {
             <button
               key={filter.id}
               type="button"
-              role="tab"
-              aria-selected={selected}
+              aria-pressed={selected}
               className={cn(
                 "rounded-lg border px-3.5 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
                 selected
@@ -64,7 +63,7 @@ export function ProjectsSection() {
           No projects in this category yet. Try another filter.
         </p>
       ) : (
-        <div className="grid gap-5 lg:grid-cols-2">
+        <div className="grid gap-5 md:grid-cols-2">
           {filtered.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}

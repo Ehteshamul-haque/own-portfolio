@@ -20,6 +20,8 @@ interface BrandIconProps {
   className?: string;
   /** Use official brand color instead of monochrome */
   colored?: boolean;
+  /** Hide from assistive tech when a visible text label is adjacent */
+  decorative?: boolean;
 }
 
 export function BrandIcon({
@@ -29,16 +31,20 @@ export function BrandIcon({
   size = 18,
   className,
   colored = true,
+  decorative = false,
 }: BrandIconProps) {
   const brand = getSkillBrandIcon(icon);
 
   if (brand) {
-    // Very dark brand fills (e.g. Express, Next.js, GitHub) stay readable on dark UI
-    const readableColor = isNearBlack(brand.hex) ? "#E2E8F0" : `#${brand.hex}`;
+    // Near-black brands adapt via --brand-near-black (theme-aware)
+    const readableColor = isNearBlack(brand.hex)
+      ? "var(--brand-near-black)"
+      : `#${brand.hex}`;
     return (
       <svg
-        role="img"
-        aria-label={`${label} logo`}
+        role={decorative ? undefined : "img"}
+        aria-hidden={decorative ? true : undefined}
+        aria-label={decorative ? undefined : `${label} logo`}
         viewBox="0 0 24 24"
         width={size}
         height={size}
@@ -51,7 +57,7 @@ export function BrandIcon({
           colored ? ({ "--brand": readableColor } as CSSProperties) : undefined
         }
       >
-        <title>{label}</title>
+        {decorative ? null : <title>{label}</title>}
         <path d={brand.path} />
       </svg>
     );

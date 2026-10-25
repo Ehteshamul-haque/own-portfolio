@@ -99,7 +99,10 @@ export function ContactSection() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <LinkButton href={`mailto:${profile.email}`}>
+            <LinkButton
+              href={`mailto:${profile.email}`}
+              className="w-full sm:w-auto"
+            >
               <Mail size={18} aria-hidden="true" />
               Email Me
             </LinkButton>
@@ -110,6 +113,7 @@ export function ContactSection() {
                 variant="secondary"
                 target={externalTarget(linkedin.href)}
                 rel={externalRel(linkedin.href)}
+                className="w-full sm:w-auto"
               >
                 <LinkedinIcon size={18} aria-hidden="true" />
                 LinkedIn
@@ -122,23 +126,25 @@ export function ContactSection() {
                 variant="secondary"
                 target={externalTarget(github.href)}
                 rel={externalRel(github.href)}
+                className="w-full sm:w-auto"
               >
                 <GithubIcon size={18} aria-hidden="true" />
                 GitHub
               </LinkButton>
             ) : null}
 
-            {hasResume ? (
+            {/* {hasResume ? (
               <LinkButton
                 href={profile.resumeUrl!}
                 variant="outline"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="w-full sm:w-auto"
               >
                 <Download size={18} aria-hidden="true" />
                 View CV
               </LinkButton>
-            ) : null}
+            ) : null} */}
           </div>
         </div>
 
@@ -158,12 +164,14 @@ export function ContactSection() {
               <input
                 id="contact-name"
                 autoComplete="name"
+                aria-invalid={errors.name ? true : undefined}
+                aria-describedby={errors.name ? "contact-name-error" : undefined}
                 className="mt-2 w-full rounded-lg border border-border bg-surface px-3 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-subtle focus:border-accent focus-visible:ring-2 focus-visible:ring-accent"
                 placeholder="Your name"
                 {...register("name")}
               />
               {errors.name ? (
-                <p className="mt-1.5 text-xs text-red-300" role="alert">
+                <p id="contact-name-error" className="mt-1.5 text-xs text-red-300" role="alert">
                   {errors.name.message}
                 </p>
               ) : null}
@@ -180,12 +188,14 @@ export function ContactSection() {
                 id="contact-email"
                 type="email"
                 autoComplete="email"
+                aria-invalid={errors.email ? true : undefined}
+                aria-describedby={errors.email ? "contact-email-error" : undefined}
                 className="mt-2 w-full rounded-lg border border-border bg-surface px-3 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-subtle focus:border-accent focus-visible:ring-2 focus-visible:ring-accent"
                 placeholder="you@company.com"
                 {...register("email")}
               />
               {errors.email ? (
-                <p className="mt-1.5 text-xs text-red-300" role="alert">
+                <p id="contact-email-error" className="mt-1.5 text-xs text-red-300" role="alert">
                   {errors.email.message}
                 </p>
               ) : null}
@@ -201,12 +211,14 @@ export function ContactSection() {
             </label>
             <input
               id="contact-subject"
+              aria-invalid={errors.subject ? true : undefined}
+              aria-describedby={errors.subject ? "contact-subject-error" : undefined}
               className="mt-2 w-full rounded-lg border border-border bg-surface px-3 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-subtle focus:border-accent focus-visible:ring-2 focus-visible:ring-accent"
               placeholder="Role, project, or introduction"
               {...register("subject")}
             />
             {errors.subject ? (
-              <p className="mt-1.5 text-xs text-red-300" role="alert">
+              <p id="contact-subject-error" className="mt-1.5 text-xs text-red-300" role="alert">
                 {errors.subject.message}
               </p>
             ) : null}
@@ -222,12 +234,14 @@ export function ContactSection() {
             <textarea
               id="contact-message"
               rows={5}
+              aria-invalid={errors.message ? true : undefined}
+              aria-describedby={errors.message ? "contact-message-error" : undefined}
               className="mt-2 w-full resize-y rounded-lg border border-border bg-surface px-3 py-2.5 text-sm text-ink outline-none transition-colors placeholder:text-ink-subtle focus:border-accent focus-visible:ring-2 focus-visible:ring-accent"
               placeholder="Share a bit about the role, team, or problem space."
               {...register("message")}
             />
             {errors.message ? (
-              <p className="mt-1.5 text-xs text-red-300" role="alert">
+              <p id="contact-message-error" className="mt-1.5 text-xs text-red-300" role="alert">
                 {errors.message.message}
               </p>
             ) : null}
@@ -241,7 +255,7 @@ export function ContactSection() {
 
           <Button
             type="submit"
-            className="mt-5"
+            className="mt-5 w-full sm:w-auto"
             disabled={status === "submitting"}
           >
             <Send size={16} aria-hidden="true" />

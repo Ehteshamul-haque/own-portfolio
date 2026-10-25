@@ -14,6 +14,7 @@ export const skillCategories: SkillCategory[] = [
       { name: "Redux", icon: "redux", priority: "secondary" },
       { name: "Zustand", priority: "secondary" },
       { name: "Tailwind CSS", icon: "tailwindcss", priority: "primary" },
+      { name: "Ant Design", icon: "antdesign", priority: "primary" },
       { name: "HTML5", icon: "html5", priority: "secondary" },
       { name: "CSS3", icon: "css", priority: "secondary" },
     ],

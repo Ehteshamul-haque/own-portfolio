@@ -47,6 +47,11 @@ export function SpiderWebBackground() {
       ctx.clearRect(0, 0, w, h);
       const linkDist = Math.min(160, w * 0.2);
       const mouseDist = linkDist * 1.6;
+      const styles = getComputedStyle(document.documentElement);
+      const nodeRgb =
+        styles.getPropertyValue("--spider-node").trim() || "125, 211, 252";
+      const linkRgb =
+        styles.getPropertyValue("--spider-link").trim() || "56, 189, 248";
 
       for (const n of nodes) {
         if (!reduced) {
@@ -78,8 +83,8 @@ export function SpiderWebBackground() {
         ctx.beginPath();
         ctx.arc(n.x, n.y, nearMouse ? 2.4 : 1.7, 0, Math.PI * 2);
         ctx.fillStyle = nearMouse
-          ? "rgba(125, 211, 252, 0.95)"
-          : "rgba(125, 211, 252, 0.5)";
+          ? `rgba(${nodeRgb}, 0.95)`
+          : `rgba(${nodeRgb}, 0.5)`;
         ctx.fill();
       }
 
@@ -93,7 +98,7 @@ export function SpiderWebBackground() {
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = `rgba(56, 189, 248, ${alpha})`;
+          ctx.strokeStyle = `rgba(${linkRgb}, ${alpha})`;
           ctx.lineWidth = 1;
           ctx.stroke();
         }
@@ -105,7 +110,7 @@ export function SpiderWebBackground() {
         ctx.beginPath();
         ctx.moveTo(nodes[i].x, nodes[i].y);
         ctx.lineTo(mouse.x, mouse.y);
-        ctx.strokeStyle = `rgba(125, 211, 252, ${alpha})`;
+        ctx.strokeStyle = `rgba(${nodeRgb}, ${alpha})`;
         ctx.lineWidth = 1.25;
         ctx.stroke();
       }
@@ -113,11 +118,11 @@ export function SpiderWebBackground() {
       if (mouse.active) {
         ctx.beginPath();
         ctx.arc(mouse.x, mouse.y, 3.5, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(186, 230, 253, 0.9)";
+        ctx.fillStyle = `rgba(${nodeRgb}, 0.9)`;
         ctx.fill();
         ctx.beginPath();
         ctx.arc(mouse.x, mouse.y, 18, 0, Math.PI * 2);
-        ctx.strokeStyle = "rgba(56, 189, 248, 0.2)";
+        ctx.strokeStyle = `rgba(${linkRgb}, 0.2)`;
         ctx.stroke();
       }
 
@@ -131,7 +136,7 @@ export function SpiderWebBackground() {
         }
         ctx.beginPath();
         ctx.arc(ripple.x, ripple.y, ripple.r, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(125, 211, 252, ${ripple.life * 0.45})`;
+        ctx.strokeStyle = `rgba(${nodeRgb}, ${ripple.life * 0.45})`;
         ctx.lineWidth = 1.5;
         ctx.stroke();
 

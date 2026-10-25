@@ -23,6 +23,7 @@ export function SkillBadge({ skill }: SkillBadgeProps) {
             label={skill.name}
             size={14}
             colored
+            decorative
             className="opacity-90 transition-opacity duration-200 group-hover/badge:opacity-100"
           />
         ) : null}

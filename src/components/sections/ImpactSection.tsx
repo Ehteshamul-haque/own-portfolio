@@ -19,12 +19,14 @@ export function ImpactSection() {
             key={item.id}
             className="rounded-2xl border border-border bg-canvas/60 p-5 transition-colors hover:border-accent/30"
           >
-            <div className="flex items-start justify-between gap-3">
-              <h3 className="font-display text-lg font-semibold text-ink">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <h3 className="min-w-0 flex-1 font-display text-lg font-semibold text-ink">
                 {item.title}
               </h3>
               {!item.verified ? (
-                <Badge variant="warning">Pending validation</Badge>
+                <Badge variant="warning" className="shrink-0">
+                  Pending validation
+                </Badge>
               ) : null}
             </div>
             <p className="mt-3 text-sm leading-relaxed text-ink-muted">

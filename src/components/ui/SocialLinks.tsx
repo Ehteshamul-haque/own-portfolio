@@ -25,10 +25,11 @@ export function SocialLinks({ links, className, size = "md" }: SocialLinksProps)
 
   if (configured.length === 0) return null;
 
-  const iconSize = size === "sm" ? 18 : 20;
+  const iconSize = size === "sm" ? 16 : 20;
+  const boxSize = size === "sm" ? "h-9 w-9" : "h-10 w-10";
 
   return (
-    <ul className={cn("flex items-center gap-2", className)}>
+    <ul className={cn("flex flex-wrap items-center gap-2", className)}>
       {configured.map((link) => {
         const Icon = icons[link.platform];
         return (
@@ -38,7 +39,10 @@ export function SocialLinks({ links, className, size = "md" }: SocialLinksProps)
               target={externalTarget(link.href)}
               rel={externalRel(link.href)}
               aria-label={link.label}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-surface-elevated text-ink-muted transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              className={cn(
+                "inline-flex items-center justify-center rounded-lg border border-border bg-surface-elevated text-ink-muted transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                boxSize,
+              )}
             >
               <Icon size={iconSize} aria-hidden="true" />
             </a>

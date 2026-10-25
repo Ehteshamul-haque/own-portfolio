@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
-:root {
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root,
+html.dark {
   --canvas: #070b12;
   --surface: #0c121c;
   --surface-elevated: #111827;
@@ -15,6 +18,43 @@
   --accent-bright: #7dd3fc;
   --background: var(--canvas);
   --foreground: var(--ink);
+  --glow: rgba(56, 189, 248, 0.06);
+  --body-bottom: #05080f;
+  --spider-node: 125, 211, 252;
+  --spider-link: 56, 189, 248;
+  --brand-near-black: #e2e8f0;
+  --theme-color: #070b12;
+  --code-keyword: #7dd3fc;
+  --code-type: #fde68a;
+  --code-key: #bae6fd;
+  --code-string: #6ee7b7;
+}
+
+html.light {
+  --canvas: #e6ebf2;
+  --surface: #eef2f7;
+  --surface-elevated: #f5f7fa;
+  --surface-hover: #e0e6ef;
+  --border: rgba(15, 23, 42, 0.12);
+  --border-strong: rgba(15, 23, 42, 0.2);
+  --ink: #0c1222;
+  --ink-muted: #3d4b5c;
+  --ink-subtle: #5a6a7d;
+  --ink-inverse: #f8fafc;
+  --accent: #0369a1;
+  --accent-bright: #0284c7;
+  --background: var(--canvas);
+  --foreground: var(--ink);
+  --glow: rgba(3, 105, 161, 0.05);
+  --body-bottom: #d5dde8;
+  --spider-node: 3, 105, 161;
+  --spider-link: 3, 105, 161;
+  --brand-near-black: #0c1222;
+  --theme-color: #e6ebf2;
+  --code-keyword: #0369a1;
+  --code-type: #9a3412;
+  --code-key: #1d4ed8;
+  --code-string: #047857;
 }
 
 @theme inline {
@@ -39,6 +79,12 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
+  color-scheme: dark;
+}
+
+html.light {
+  color-scheme: light;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -58,16 +104,55 @@ html {
 
 body {
   background:
-    radial-gradient(ellipse at top, rgba(56, 189, 248, 0.06), transparent 40%),
-    linear-gradient(180deg, #070b12 0%, #05080f 100%);
-  background-attachment: fixed;
+    radial-gradient(ellipse at top, var(--glow), transparent 40%),
+    linear-gradient(180deg, var(--canvas) 0%, var(--body-bottom) 100%);
   color: var(--ink);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   min-height: 100vh;
+  overflow-x: clip;
+}
+
+/* Circular theme reveal (View Transitions API) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+  filter: none;
+}
+
+/* Light theme expands outward (new layer on top) */
+html.light::view-transition-old(root) {
+  z-index: 1;
+}
+
+html.light::view-transition-new(root) {
+  z-index: 9999;
+}
+
+/* Dark theme collapses inward (old layer on top) */
+html.dark::view-transition-old(root) {
+  z-index: 9999;
+}
+
+html.dark::view-transition-new(root) {
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  body {
+    background-attachment: fixed;
+  }
 }
 
 ::selection {
-  background: rgba(56, 189, 248, 0.3);
+  background: color-mix(in srgb, var(--accent) 35%, transparent);
   color: var(--ink);
 }
 

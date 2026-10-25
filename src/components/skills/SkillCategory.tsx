@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Cloud,
   Code2,
@@ -10,10 +8,8 @@ import {
   Sparkles,
   type LucideIcon,
 } from "lucide-react";
-import { motion } from "motion/react";
 import { SkillBadge } from "@/components/skills/SkillBadge";
 import { Badge } from "@/components/ui/Badge";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { cn } from "@/lib/utils";
 import type { SkillCategory as SkillCategoryData, SkillCategoryIcon } from "@/types/portfolio";
 
@@ -29,14 +25,13 @@ const categoryIcons: Record<SkillCategoryIcon, LucideIcon> = {
 
 interface SkillCategoryProps {
   category: SkillCategoryData;
-  index: number;
+  index?: number;
 }
 
-export function SkillCategory({ category, index }: SkillCategoryProps) {
-  const reducedMotion = useReducedMotion();
+export function SkillCategory({ category }: SkillCategoryProps) {
   const Icon = categoryIcons[category.icon];
 
-  const content = (
+  return (
     <article
       className={cn(
         "flex h-full flex-col rounded-xl border bg-surface/70 p-5 sm:p-6",
@@ -46,8 +41,8 @@ export function SkillCategory({ category, index }: SkillCategoryProps) {
           : "border-border hover:border-border-strong",
       )}
     >
-      <header className="flex items-start justify-between gap-3 border-b border-border pb-4">
-        <div className="flex items-start gap-3">
+      <header className="flex flex-wrap items-start justify-between gap-3 border-b border-border pb-4">
+        <div className="flex min-w-0 flex-1 items-start gap-3">
           <span
             className={cn(
               "mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border",
@@ -59,7 +54,7 @@ export function SkillCategory({ category, index }: SkillCategoryProps) {
           >
             <Icon size={16} strokeWidth={1.75} />
           </span>
-          <div>
+          <div className="min-w-0">
             <h3 className="font-display text-lg font-semibold tracking-tight text-ink">
               {category.title}
             </h3>
@@ -70,7 +65,11 @@ export function SkillCategory({ category, index }: SkillCategoryProps) {
             ) : null}
           </div>
         </div>
-        {category.featured ? <Badge variant="accent">Core</Badge> : null}
+        {category.featured ? (
+          <Badge variant="accent" className="shrink-0">
+            Core
+          </Badge>
+        ) : null}
       </header>
 
       <ul className="mt-5 flex flex-wrap gap-2">
@@ -79,19 +78,5 @@ export function SkillCategory({ category, index }: SkillCategoryProps) {
         ))}
       </ul>
     </article>
-  );
-
-  if (reducedMotion) return content;
-
-  return (
-    <motion.div
-      className="h-full"
-      initial={{ opacity: 0, y: 14 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-8% 0px" }}
-      transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.25) }}
-    >
-      {content}
-    </motion.div>
   );
 }

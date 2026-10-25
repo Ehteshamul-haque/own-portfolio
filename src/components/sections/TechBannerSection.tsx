@@ -10,10 +10,12 @@ export function TechBannerSection() {
       className="relative border-y border-border bg-surface/50 py-8 sm:py-10"
     >
       <div className="mx-auto mb-6 max-w-6xl px-4 text-center sm:px-6 lg:px-8">
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-accent">
+        <h2
+          id="stack-banner-heading"
+          className="text-xs font-medium tracking-[0.18em] text-accent uppercase"
+        >
           Platforms & stack
-        </p>
-       
+        </h2>
       </div>
 
       <div className="space-y-6">

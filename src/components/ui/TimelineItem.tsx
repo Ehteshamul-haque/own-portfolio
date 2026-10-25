@@ -1,28 +1,22 @@
-"use client";
-
-import { motion } from "motion/react";
 import { Badge } from "@/components/ui/Badge";
-import { useReducedMotion } from "@/hooks/use-reduced-motion";
 import { externalRel, externalTarget, isConfiguredUrl } from "@/lib/utils";
 import type { ExperienceItem } from "@/types/portfolio";
 
 interface TimelineItemProps {
   item: ExperienceItem;
-  index: number;
+  index?: number;
 }
 
-export function TimelineItem({ item, index }: TimelineItemProps) {
-  const reducedMotion = useReducedMotion();
-
-  const content = (
+export function TimelineItem({ item }: TimelineItemProps) {
+  return (
     <article className="relative pl-10 sm:pl-12">
       <span
         className="absolute left-[0.55rem] top-2 h-3 w-3 rounded-full border-2 border-accent bg-canvas sm:left-[0.7rem]"
         aria-hidden="true"
       />
-      <div className="rounded-2xl border border-border bg-surface/70 p-5 sm:p-6">
+      <div className="rounded-2xl border border-border bg-surface/70 p-4 sm:p-6">
         <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
+          <div className="min-w-0">
             <h3 className="font-display text-xl font-semibold text-ink">
               {item.title}
             </h3>
@@ -42,7 +36,7 @@ export function TimelineItem({ item, index }: TimelineItemProps) {
               <span className="text-ink-subtle"> · {item.employmentType}</span>
             </p>
           </div>
-          <p className="text-sm text-ink-subtle">
+          <p className="shrink-0 text-sm text-ink-subtle">
             {item.startDate} — {item.endDate}
             {item.location ? ` · ${item.location}` : ""}
           </p>
@@ -79,18 +73,5 @@ export function TimelineItem({ item, index }: TimelineItemProps) {
         </div>
       </div>
     </article>
-  );
-
-  if (reducedMotion) return content;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10% 0px" }}
-      transition={{ duration: 0.45, delay: index * 0.06 }}
-    >
-      {content}
-    </motion.div>
   );
 }

@@ -24,7 +24,7 @@ export const certifications: CertificationItem[] = [
     name: "React.Js with Firebase Database",
     issuer: "Udemy",
     isPlaceholder: false,
-  },
+  }
 ];
 
 export const publishedEducation = education.filter((item) => !item.isPlaceholder);

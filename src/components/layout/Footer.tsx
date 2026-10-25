@@ -19,7 +19,7 @@ export function Footer() {
             {profile.title} focused on MERN, Next.js, Shopify, and production-ready
             systems.
           </p>
-          <SocialLinks links={profile.socialLinks} className="mt-5" size="sm" />
+          <SocialLinks links={profile.socialLinks} className="mt-5 justify-start" size="sm" />
           {hasResume ? (
             <LinkButton
               href={profile.resumeUrl!}
